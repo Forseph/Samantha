@@ -42,7 +42,7 @@ def collectData(url, filename):
     with open(filename, 'w') as fp:
         json.dump(outD, fp, indent=2)
 
-collectData('https://www.rottentomatoes.com/m/star_wars_the_last_jedi/reviews/?type=user', 'starwars.json')
+collectData('https://www.rottentomatoes.com/m/star_wars_episode_vii_the_force_awakens/reviews/?type=user', 'starwars.json')
 collectData('https://www.rottentomatoes.com/m/about_time/reviews/?type=user', 'abouttime.json')
 collectData('https://www.rottentomatoes.com/m/taken/reviews/?type=user', 'taken.json')
 collectData('https://www.rottentomatoes.com/m/toy_story/reviews/?type=user', 'toystory.json')

@@ -4,6 +4,8 @@ import re
 import json
 import numpy as np
 import pandas as pd
+import collections
+from sklearn.feature_extraction.text import CountVectorizer
 
 def getjsons(filename):
     with open(filename, 'r') as fp:
@@ -22,6 +24,21 @@ def createdf(dictionary):
     df = pd.DataFrame(dictionary.items(), columns = ['Review', 'Rating'], dtype=None)
     df['Sentiment'] = getsentiment(df)
     return df
+
+def mostcommon(df, name):
+    counts = []
+    vector = CountVectorizer()
+    words = df['Review']
+    dtm = vector.fit(words.values.astype('U'))
+    names = dtm.get_feature_names()
+    dtm = vector.fit_transform(words.values.astype('U'))
+    dtm_dense = dtm.todense()
+    df = pd.DataFrame(dtm_dense, columns=names)
+    for col in df:
+        counts.append((df[col].sum(), col))
+    print "\nTop 20 words to describe", name
+    for i in sorted(counts)[-20:]:
+        print i[1], ":", i[0]
 
 starwars = getjsons("starwars.json")
 abouttime = getjsons("abouttime.json")
@@ -44,6 +61,17 @@ saw = createdf(saw)
 saw2 = createdf(saw2)
 titanic = createdf(titanic)
 piratesofthecaribbean = createdf(piratesofthecaribbean)
+
+mostcommon(starwars, "Star Wars")
+mostcommon(abouttime, "About Time")
+mostcommon(taken, "Taken")
+mostcommon(toystory, "Toy Story")
+mostcommon(cloudatlas, "Cloud Atlas")
+mostcommon(stepbrothers, "Stepbrothers")
+mostcommon(saw, "Saw")
+mostcommon(saw2, "Saw 2")
+mostcommon(titanic, "Titanic")
+mostcommon(piratesofthecaribbean, "Pirates of the Caribbean")
 
 dataframes = [starwars, abouttime, taken, toystory, cloudatlas, stepbrothers, saw, saw2, titanic, piratesofthecaribbean]
 t2 = [starwars, abouttime, taken, toystory, cloudatlas, stepbrothers, titanic, piratesofthecaribbean]

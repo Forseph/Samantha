@@ -2,6 +2,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 def analyze(train, test):
 
@@ -25,7 +27,8 @@ def analyze(train, test):
     nb.fit(X_train_dtm, y_train)
     y_pred_class = nb.predict(X_test_dtm)
 
-    print metrics.accuracy_score(y_test, y_pred_class) 
+    score = metrics.accuracy_score(y_test, y_pred_class)
+    print score
     conf_matrix = metrics.confusion_matrix(y_test, y_pred_class)
     print conf_matrix
     false_pos = X_test[y_pred_class > y_test]
@@ -34,9 +37,10 @@ def analyze(train, test):
     false_neg = X_test[y_pred_class < y_test]
     #print "\nFalse Negatives"
     #print false_neg
+    return score
 
-analyze("train1.csv", "test1.csv")
-analyze("train2.csv", "test2.csv")
-analyze("train3.csv", "test3.csv")
-analyze("train4.csv", "test4.csv")
-analyze("train5.csv", "test5.csv")
+t1 = analyze("train1.csv", "test1.csv")
+t2 = analyze("train2.csv", "test2.csv")
+t3 = analyze("train3.csv", "test3.csv")
+t4 = analyze("train4.csv", "test4.csv")
+t5 = analyze("train5.csv", "test5.csv")
