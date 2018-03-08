@@ -1,34 +1,49 @@
+# TOTAL RUN TIME ON STANDARD LAPTOP: APPROX. 30 MINS
+
+# Import necessary modules
 import requests
 from bs4 import BeautifulSoup
 import re
 import json
 
+# Grab stopwords from a stopword file
 stopwords = set([stopword.strip('\n') for stopword in open('stopwords.csv')])
 
+# Input: text of a review
+# Output: alphabetic text without stopwords
 def clean(review):
     words = (re.sub('[^a-zA-Z]', " ", review)).split()
     return " ".join([word for word in words if not word in stopwords])
 
+# Input: url of movie reviews on Rotten Tomatoes, filename to write out to
 def collectData(url, filename):
+    # get requests from the webpage
     page = requests.get(url)
+    # soup contains html data from the page
     soup = BeautifulSoup(page.content, "lxml")
+    # find the main_container div
     maindiv = soup.find(id="main_container")
     outD = {}
+    # Loop through 50 pages since there are about 20 reviews per page
     for i in range(50):
+        # url of pages after page 1 need to be updated with page=i
         if i != 0:
             updatedurl = url.split('?')[0] + "?page=" + str(i + 1) + "&" + url.split('?')[1] + "&sort="
             page = requests.get(updatedurl)
             soup = BeautifulSoup(page.content, "lxml")
             maindiv = soup.find(id="main_container")
-
+        # Grab all reviews, strip out strange unicode characters
         reviews = maindiv.find_all('div', class_="user_review")
         textReviews = [clean(r.get_text().encode('ascii', 'ignore').decode('utf-8')) for r in reviews]
 
+        # Grab all ratings
         ratings = maindiv.find_all('span', class_='fl')
 
         starReviews = []
         star = 0.0
-
+        
+        # Look through glyphicon stars and count the number of them
+        # If there is text with 1/2, add 0.5 to the count of stars
         for rating in ratings:
             star = 0.0
             if not rating.get_text().isspace():
@@ -37,11 +52,14 @@ def collectData(url, filename):
             star += len(stars)
             starReviews.append(star)
 
+        # Add the new review: rating into the outD dictionary
         outD.update(dict(zip(textReviews, starReviews)))
   
+    # Once the loop is finished, write the dictionary out to a json file
     with open(filename, 'w') as fp:
         json.dump(outD, fp, indent=2)
 
+# Call collectData function on all 10 movies and write results out to json files
 collectData('https://www.rottentomatoes.com/m/star_wars_episode_vii_the_force_awakens/reviews/?type=user', 'starwars.json')
 collectData('https://www.rottentomatoes.com/m/about_time/reviews/?type=user', 'abouttime.json')
 collectData('https://www.rottentomatoes.com/m/taken/reviews/?type=user', 'taken.json')
