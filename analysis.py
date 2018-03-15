@@ -39,8 +39,8 @@ def analyze(train, test):
     #print false_neg
     return score
 
-t1 = analyze("train1.csv", "test1.csv")
-t2 = analyze("train2.csv", "test2.csv")
-t3 = analyze("train3.csv", "test3.csv")
-t4 = analyze("train4.csv", "test4.csv")
-t5 = analyze("train5.csv", "test5.csv")
+t1 = analyze("csv_files/train1.csv", "csv_files/test1.csv")
+t2 = analyze("csv_files/train2.csv", "csv_files/test2.csv")
+t3 = analyze("csv_files/train3.csv", "csv_files/test3.csv")
+t4 = analyze("csv_files/train4.csv", "csv_files/test4.csv")
+t5 = analyze("csv_files/train5.csv", "csv_files/test5.csv")
