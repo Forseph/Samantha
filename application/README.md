@@ -15,5 +15,7 @@
   3. use pip install to install necessary library: bs4(BeautifulSoup), re, requests, json
   4. set up the Flask run file by using: FLASK_APP=server.py
   5. run: flask run
+  6. visit:  http://127.0.0.1:5000/ on browser
+
 
   p.s. the json files in the movies_data folder are required to train our prediction model.
