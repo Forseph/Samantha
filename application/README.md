@@ -12,8 +12,8 @@
 ### How to run the program
   1. use python 2.7 for this project
   2. install flask as back-end framework
-  3. use pip install to install necessary library: bs4(BeautifulSoup), re, requests, json
-  4. set up the Flask run file by using: FLASK_APP=server.py
+  3. use pip install to install necessary library: pip intall bs4(BeautifulSoup), re, requests, json, lxml and apt-get install python-tk when necessary
+  4. set up the Flask run file by using: export FLASK_APP=server.py
   5. run: flask run
   6. visit:  http://127.0.0.1:5000/ on browser
 
